@@ -1,0 +1,167 @@
+%!TEX program = xelatex
+% run this file: xelatex -shell-escape slides.tex
+\documentclass{beamer}
+
+\usepackage{blindtext}
+\usepackage{minted}
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+
+\usetheme{Execushares}
+
+% define title and subtitle here
+\title{Introduction to C and Unix}
+\subtitle{From a Teaching Assistant's Perspective}
+
+\author{Kevin Bao, Cheng Su}
+\date{\today}
+
+\begin{document}
+	\setcounter{framenumber}{0}
+	\frame{\titlepage}
+	\setcounter{showProgressBar}{1}
+	\setcounter{showSlideNumbers}{1}
+
+	% define contents here
+	\begin{frame}
+		\frametitle{Contents}
+		\begin{enumerate}
+			\item Introduction to C \\ 
+				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} pointer and gdb}
+			\item Introduction to Unix  \\ 
+				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} shell, ssh, gcc, make and vi}
+			\item Suggested Readings \\ 
+				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} books and blogs}
+		\end{enumerate}
+	\end{frame}
+
+	% define each slides here
+	% 1.intro
+	\begin{frame}
+		\frametitle{Get your weapon: shell}
+		\begin{enumerate}
+			\item Linux: Ctrl-Alt-T
+			\item Mac OS: Cmd-Space, search "terminal"
+			\item Windows: Go to 1 or 2
+		\end{enumerate}
+	\end{frame}
+
+	% 2.shell
+	\begin{frame}
+		\frametitle{Shell: a servant}
+		You write command, shell runs it for you.
+		\begin{center}
+		\includegraphics[width=0.6\textwidth, height=0.6\textheight]{img/sudo.jpg}
+		\end{center}
+	\end{frame}
+
+	% 2.shell - command
+	\begin{frame}[fragile]
+		\frametitle{A philosophical shell}
+		Who am I ...
+		\begin{center}
+		\begin{minted}{bash}
+			$ whoami
+			chengsu
+
+			$ date
+			Sat Sep  3 20:57:13 CDT 2016
+
+			$ pwd
+			/home/chengsu 
+		\end{minted}
+		\end{center}	
+	\end{frame}
+
+	% 3.ssh
+	\begin{frame}[fragile]
+		\frametitle{SSH}
+		Login to a remote computer.
+		\begin{center}
+		\begin{minted}{bash}
+			$ ssh remote_username@remote_host
+			$ run-any-command-on-remote-computer
+			$ exit
+    \end{minted}
+		\end{center}
+		\begin{itemize}
+      \item Options: -X, etc.
+			\item No hassle of password? \\
+			\begin{itemize}
+				\item ssh keys
+				\item sshpass
+			\end{itemize}	
+		\end{itemize}
+	\end{frame}
+
+	% 4.gcc
+  \begin{frame}
+    \frametitle{GCC}
+    GNU Compiler Collection.
+
+		\begin{enumerate}
+      \item \textbf{\textit{preprocessing}} (C code) 
+      \item compilation (assembly code)
+			\item assembly (binary code)
+			\item linking (executable binary code)
+    \end{enumerate}
+  \end{frame}
+
+	% 5.make
+  \begin{frame}[fragile]
+    \frametitle{Make}
+    Recipe to cook (build) programs. 
+    \begin{minted}{make}
+			target: prerequisite1 prerequisite2 ...
+			    command1
+			    command2
+			    ...
+    \end{minted}
+		\begin{itemize}
+      \item Efficiency (compare timestamps of \textit{target} and \textit{prereqs})
+			\begin{itemize}
+        \item make ; make
+      \end{itemize}
+			\item Other usage (not serious)
+			\begin{itemize}
+        \item workflow control: \textcolor{ExecusharesGrey}{\footnotesize\hspace{1em}\url{http://widgetsandshit.com/teddziuba/2011/02/stupid-unix-tricks-workflow-control-with-gnu-make.html}}
+      \end{itemize}						 
+    \end{itemize}	
+	\end{frame}
+
+	% 6.vi
+	\begin{frame}
+		\frametitle{Vi: text editor}
+		
+		\begin{itemize}
+			\item \small Basic usage
+			\begin{itemize}
+				\item \small write code: i (insert mode)
+				\item \small write command: <Esc> (command mode)
+				\item \small go to a line: :12 (go to 12th line)
+				\item \small copy a line: yy
+				\item \small paste a line: p
+				\item \small search a word: /dog (search word: dog)
+				\item \small undo: u
+			\end{itemize} 
+      \item \small How to learn Vi/Vim
+      \begin{itemize}
+        \item \small vimtutor
+				\item \small \url{http://www.openvim.com}
+				\item \small even a game to play: \url{http://vim-adventures.com}
+      \end{itemize}
+      \item \small Configure Vi
+      \begin{itemize}
+				\item \small dotfile: .vimrc (set indentation to 2 space)
+			\end{itemize}
+    \end{itemize}
+  \end{frame}
+
+	% suggested readings
+	\begin{frame}
+    \frametitle{Suggested Readings}
+
+	\end{frame}	
+\end{document}

@@ -1,0 +1,18 @@
+\frametitle {Make}
+    Recipe to cook (build) programs.
+    \begin{minted}{make}
+target: prerequisite1 prerequisite2 ...
+    command1
+    command2
+    ...
+    \end{minted}
+\begin{itemize}
+      \item Efficiency (compare timestamps of \textit{target} and \textit{prereqs})
+\begin{itemize}
+        \item make ; make
+      \end{itemize}
+\item Other usage (not serious)
+\begin{itemize}
+        \item workflow control: \textcolor{ExecusharesGrey}{\footnotesize\hspace{1em}\url{http://widgetsandshit.com/teddziuba/2011/02/stupid-unix-tricks-workflow-control-with-gnu-make.html}}
+      \end{itemize}
+    \end{itemize}
