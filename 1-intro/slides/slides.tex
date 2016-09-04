@@ -13,7 +13,7 @@
 
 % define title and subtitle here
 \title{Introduction to C and Unix}
-\subtitle{From a Teaching Assistant's Perspective}
+\subtitle{CS537 Section 304}
 
 \author{Kevin Bao, Cheng Su}
 \date{\today}
@@ -28,8 +28,9 @@
 	\begin{frame}
 		\frametitle{Contents}
 		\begin{enumerate}
+			\item Overview \\
 			\item Introduction to C \\ 
-				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} pointer and gdb}
+				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} pointer, man and gdb}
 			\item Introduction to Unix  \\ 
 				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} shell, ssh, gcc, make and vi}
 			\item Suggested Readings \\ 
@@ -38,6 +39,41 @@
 	\end{frame}
 
 	% define each slides here
+	% 1.overview
+  \begin{frame}
+    \frametitle{Overview}
+		\begin{enumerate}
+			\item 5 projects
+			\item Use C
+			\item Vedios are useful
+			\item Start early
+			\item Mind your code quality
+		\end{enumerate}
+	\end{frame}
+
+	% 1.pointer
+  \begin{frame}
+    \frametitle{What is a pointer}
+    \begin{enumerate}
+      \item For now, treat the memory as a giant array
+      \item Pointer is like an index
+      \item How can we know the size of the data?
+    \end{enumerate}
+  \end{frame}
+
+	% 2.man
+  \begin{frame}
+    \frametitle{Man}
+    \begin{enumerate}
+      \item man man
+      \item An interface to the on-line reference manuals
+      \item We will mainly use man 2 and man 3
+    \end{enumerate}
+  \end{frame}
+
+	% 3.demo
+	\section{Demo}
+
 	% 1.intro
 	\begin{frame}
 		\frametitle{Get your weapon: shell}
@@ -162,6 +198,30 @@
 	% suggested readings
 	\begin{frame}
     \frametitle{Suggested Readings}
+		\begin{itemize}
+        \item \small C
+        \begin{itemize}
+          \item \small \href{https://www.amazon.com/Programming-Language-Prentice-Hall-Software/dp/0131103628}{The C Programming Language}
+          \item \small \href{https://www.amazon.com/Expert-Programming-Peter-van-Linden/dp/0131774298}{Expert C Programming: Deep C Secrets (Chapter 1)}
+        \end{itemize}
+    \end{itemize}
 
+		\begin{itemize}
+        \item \small Unix (Basic) 
+				\begin{itemize}
+					\item \small \href{http://matt.might.net/articles/basic-unix}{Survival guide for Unix newbies}
+					\item \small \href{http://matt.might.net/articles/settling-into-unix}{Settling into Unix}
+					\item \small \href{https://www.amazon.com/Unix-Programming-Environment-Prentice-Hall-Software/dp/013937681X}{The Unix Programming Environment (Chapter 1)}
+			\end{itemize}	
+		\end{itemize}
+
+		\begin{itemize}
+        \item \small gcc, gdb and make
+        \begin{itemize}
+          \item \small \href{http://pages.cs.wisc.edu/~remzi/OSTEP/lab-tutorial.pdf}{Our Lab Tutorial}
+          \item \small \href{https://www.amazon.com/Managing-Projects-Make-Nutshell-Handbooks/dp/0596006101}{Managing Projects with GNU Make (Chapter 1)}
+        \end{itemize}
+    \end{itemize}	
 	\end{frame}	
+
 \end{document}
