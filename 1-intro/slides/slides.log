@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.4-0.9998 (TeX Live 2012/Debian) (format=xelatex 2016.9.3)  4 SEP 2016 11:17
+This is XeTeX, Version 3.1415926-2.4-0.9998 (TeX Live 2012/Debian) (format=xelatex 2016.9.3)  5 SEP 2016 15:15
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1556,7 +1556,7 @@ runsystem(rm slides.pyg)...executed.
 
 ]
 LaTeX Font Info:    Font shape `EU1/lmss/bx/it' in size <12> not available
-(Font)              Font shape `EU1/lmss/bx/sl' tried instead on input line 146
+(Font)              Font shape `EU1/lmss/bx/sl' tried instead on input line 149
 .
  [11
 
@@ -1584,10 +1584,10 @@ LaTeX Font Info:    Font shape `EU1/lmss/m/it' in size <5> not available
 
 ]
 LaTeX Font Info:    Font shape `EU1/lmss/m/it' in size <10> not available
-(Font)              Font shape `EU1/lmss/m/sl' tried instead on input line 196.
+(Font)              Font shape `EU1/lmss/m/sl' tried instead on input line 199.
 
 LaTeX Font Info:    Font shape `EU1/lmss/m/it' in size <7> not available
-(Font)              Font shape `EU1/lmss/m/sl' tried instead on input line 196.
+(Font)              Font shape `EU1/lmss/m/sl' tried instead on input line 199.
 
  [13
 
@@ -1604,17 +1604,17 @@ LaTeX Font Info:    Font shape `EU1/lmss/m/it' in size <7> not available
 \tf@snm=\write11
 \openout11 = `slides.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 227.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 227.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 236.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 236.
  (./slides.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 227.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 227.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 227.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 236.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 236.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 236.
  ) 
 Here is how much of TeX's memory you used:
  32548 strings out of 494011
  649894 string characters out of 3153096
- 708647 words of memory out of 3000000
+ 710051 words of memory out of 3000000
  35160 multiletter control sequences out of 15000+200000
  12141 words of font info for 85 fonts, out of 3000000 for 9000
  1144 hyphenation exceptions out of 8191
