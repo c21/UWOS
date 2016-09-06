@@ -66,3 +66,116 @@ $ man apt-get
 man command is to show the official manual of certain command, or you can use google to explore how to use a command.
 
 For Mac OS X, personally I think the default terminal is good. You can customize terminal by clicking *preferences* option.
+
+### ssh
+ssh is a command to login to remote computer from your local computer. After login, you can run any command in shell, while the command is actually executed on that remote computer. Essentially, you work remotely on another computer.
+
+Why it helps? In this course, we require you to write projects which can be run on CS lab's computer. Something developed on your own machine may not run successfully on CS lab's machine. With ssh, you can write projects on your laptop at your favourite place (maybe CS lab?), and don't need to go to a crowded CS lab.
+
+To login to a remote computer, you should give your username and that computer's host name. Here **chengsu** is my username, and **royal-01.cs.wisc.edu** is one lab computer's name. Type in shell:
+
+```shell
+$ ssh chengsu@royal-01.cs.wisc.edu
+chengsu@royal-01.cs.wisc.edu's password: 
+```
+You will be asked to provide password. You don't need to login to the same computer as I did. The list of available computer can be found [here](https://csl.cs.wisc.edu/services/instructional-facilities).
+
+After type in your password, you will be placed in another shell at that remote computer. You shell should look like this:
+
+```shell
+Welcome to Ubuntu 14.04.5 LTS (GNU/Linux 3.13.0-95-generic x86_64)
+===============================================================================
+      REMINDER: BRING FOOD AND DRINK TO THE CS INSTRUCTIONAL COMPUTER LABS
+===============================================================================
+[chengsu@royal-01] (1)$ 
+```
+
+Note that before the prompt **$**, there should be **[your-cs-username@lab-machine-name]**. You can explore the current directory by:
+
+```shell
+[chengsu@royal-01] (1)$ ls
+```
+
+To logout lab's machine, just logout:
+```shell
+[chengsu@royal-01] (1)$ logout
+```
+Yes, logout is a command.
+
+#### No hassle of password
+One bad thing about ssh is you have to provide password when you want to login. One good thing is you can preset password once, and don't need to type in every time.
+
+How to do that? One solution is to use public and private key. I encourage you to work through [this article](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-to-connect-to-a-remote-server-in-ubuntu).
+
+*Please read that article before scrolling down.*
+
+After setting up the keys, you may find you cannot ssh in lab's machine without password. It's not the fault of ssh keys. At [our lab's website](https://csl.cs.wisc.edu/services/remote-access-csl-computers), it says:
+*Linux workstations and servers: use ssh. Due to limitation of AFS, you can not use SSH Public Key authentication.*
+
+Well, well. What is AFS? How it limits us? We will learn AFS later in our lecture. For now, let's quickly come up with some solution.
+
+First, we will use **sshpass** instead of **ssh**. To install sshpass, here is the [instruction](https://gist.github.com/arunoda/7790979). After installing successfully, you can type in sshpass to explore how to use it:
+```shell
+$ sshpass
+Usage: sshpass [-f|-d|-p|-e] [-hV] command parameters
+   -f filename   Take password to use from file
+   -d number     Use number as file descriptor for getting password
+   -p password   Provide password as argument (security unwise)
+   -e            Password is passed as env-var "SSHPASS"
+   With no parameters - password will be taken from stdin
+
+   -h            Show help (this screen)
+   -V            Print version information
+At most one of -f, -d, -p or -e should be used
+```
+
+First I create a file with content being my password. E.g., if my password is 123456, I create a file called my_password in my home directory:
+
+```shell
+$ cd ~
+$ echo 123456 >my_password
+```
+**cd** is the command to change directory. The symbol **~** represents home directory. **echo** is command to display a text. Here we use I/O redirection（>）to display *123456* to file instead of standard output.
+
+To login to lab's computer, one example is:
+```shell
+$ sshpass -f ~/my_password ssh chengsu@royal-01.cs.wisc.edu
+```
+
+It works!
+
+Now you don't need to type in password anymore. But hold on one minute, let's keep your password secretly:
+```shell
+$ chmod 600 ~/my_password
+```
+
+**chmod** is the command to change file's mode(who can read, write and execute). In this way, this file can only be read and written by yourself.
+
+One step further, though we don't need to type in password every time, but we have to type the verbose command every time:
+```shell
+$ sshpass -f ~/my_password ssh chengsu@royal-01.cs.wisc.edu
+$ sshpass -f ~/my_password ssh chengsu@royal-01.cs.wisc.edu
+$ sshpass -f ~/my_password ssh chengsu@royal-01.cs.wisc.edu
+$ zzzzzz ...
+```
+It would be nice if we could have alias of our long command. We can! There is a command called alias:
+```shell
+$ alias wisc='sshpass -f ~/my_password ssh chengsu@royal-01.cs.wisc.edu'
+$ wisc
+```
+Here I make an alias called **wisc** for our long command. Next time, when I type **wisc**, it will just run our previous command.
+
+Everything looks good right now. However, if we close this terminal, and open again, **wisc** magic doesn't happen. So we need find some place to persist our command:
+```shell
+$ alias wisc='sshpass -f ~/my_password ssh chengsu@royal-01.cs.wisc.edu'
+```
+
+The place to store our command should be shell's dot file. If you have worked through [the article I recommended](matt.might.net/articles/settling-into-unix), you should know what I mean. Add the command to your shell's dot file. It would be either **.bash_profile** or **.bashrc**. In my case, it is **.bashrc**:
+```shell
+$ echo "alias wisc='sshpass -f ~/my_password ssh chengsu@royal-01.cs.wisc.edu'" >>~/.bashrc
+$ source ~/.bashrc
+```
+
+We are done! **source** command is run the file in current shell. If you wonder the relationship between shell's dot file and shell, a short answer is when you set up a shell, it will run the commands in its dot file first. So the alias command gets a chance to run before we issue any command, and our life becomes easy.
+
+**NOTE: In general, we should use ssh keys, which is safer than our sshpass trick.** 
