@@ -179,3 +179,21 @@ $ source ~/.bashrc
 We are done! **source** command is run the file in current shell. If you wonder the relationship between shell's dot file and shell, a short answer is when you set up a shell, it will run the commands in its dot file first. So the alias command gets a chance to run before we issue any command, and our life becomes easy.
 
 **NOTE: In general, we should use ssh keys, which is safer than our sshpass trick.** 
+
+#### Run the game for you (as promised)
+As we said before, in shell you can play games. After sshing into lab's computer, you can find some games by:
+```shell
+$ ssh chengsu@royal-01.cs.wisc.edu
+$ cd /usr/games
+$ ls
+```
+In Linux, there are always some old games in above directory. However, we cannot run these games by basic ssh. By default, basic ssh cannot run any GUI application. However, we can use **X** option:
+```shell
+$ ssh -X chengsu@royal-01.cs.wisc.edu
+$ cd /usr/games
+$ ls
+$ ./gnome-sudoku
+```
+If you want to learn more about **ssh**, you can use **man** command, or just read [this article](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-to-connect-to-a-remote-server-in-ubuntu) I recommended.
+
+Enjoy your sudoku!
