@@ -51,3 +51,18 @@ and your servant always finishes his task.
 You may now wonder what the heck is going on with above command. Specifically, the one-liner runs four commands one by one (find, xargs, cat, wc). In addition, it also uses filename shorthand (*.c) and pipe (|). Filename shorthand and pipe are features of shell.
 
 For the beginner of Unix and shell, [this article](http://matt.might.net/articles/basic-unix) is a good starting point. After reading that, you can also read [this article](http://matt.might.net/articles/settling-into-unix). If you want to learn Unix and shell in a systematic way, [The Unix Programming Environment](https://www.amazon.com/Unix-Programming-Environment-Prentice-Hall-Software/dp/013937681X) is a great book. Chapter 1 covers most of everyday used commands.
+
+#### Default terminal sucks ...
+For Linux, you may find default purple terminal is neither looking pretty nor user-friendly. I admit, and I use another terminal emulator called tilda when I work in Linux. To get tilda in Linux:
+
+```shell
+$ sudo apt-get install tilda
+```
+apt-get is the command to manage software including install, uninstall, etc. Here we install a software package called tilda. You can explore a comprehensive explanation of apt-get by:
+
+```shell
+$ man apt-get
+```
+man command is to show the official manual of certain command, or you can use google to explore how to use a command.
+
+For Mac OS X, personally I think the default terminal is good. You can customize terminal by clicking *preferences* option.
