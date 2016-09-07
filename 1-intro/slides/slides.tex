@@ -30,7 +30,7 @@
 		\begin{enumerate}
 			\item Overview \\
 			\item Introduction to C \\ 
-				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} pointer, man and gdb}
+				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} pointer and man}
 			\item Introduction to Unix  \\ 
 				\textcolor{ExecusharesGrey}{\footnotesize\hspace{1em} shell, ssh, gcc, make and vi}
 			\item Suggested Readings \\ 
@@ -71,17 +71,29 @@
     \end{enumerate}
   \end{frame}
 
-	% 3.demo
-	\section{Demo}
+	% 3.open terminal
+  \begin{frame}
+    \frametitle{Open your terminal}
+    \begin{enumerate}
+      \item Linux: Ctrl-Alt-T
+      \item Mac OS: Cmd-Space, search ``terminal''
+      \item Windows: Get a computer with 1 or 2
+    \end{enumerate}
+  \end{frame}
 
-	% 1.intro
-	\begin{frame}
-		\frametitle{Get your weapon: shell}
-		\begin{enumerate}
-			\item Linux: Ctrl-Alt-T
-			\item Mac OS: Cmd-Space, search ``terminal''
-			\item Windows: Get a computer with 1 or 2
-		\end{enumerate}
+	% 4.download code
+	\begin{frame}[fragile]
+		\frametitle{Download our github repo}
+		https://github.com/c21/UWOS
+		\begin{center}		
+		\begin{minted}{bash}
+			$ git clone https://github.com/c21/UWOS.git
+			$ cd UWOS/1-intro/demo/c
+			$ ls
+			pointer0.c  pointer1.c  pointer2.c ...
+			$ cat pointer0.c
+    \end{minted}
+		\end{center}
 	\end{frame}
 
 	% 2.shell
@@ -119,7 +131,7 @@
 		\begin{minted}{bash}
 			$ ssh remote_username@remote_host
 			$ run-any-command-on-remote-computer
-			$ exit
+			$ logout
     \end{minted}
 		\end{center}
 		\begin{itemize}
@@ -135,6 +147,21 @@
 		\end{itemize}
 	\end{frame}
 
+	% 3-2.ssh code
+	\begin{frame}[fragile]
+		\frametitle{Try SSH yourself}
+		Open a sudoku game on lab's computer
+		\begin{center}
+		\begin{minted}{bash}
+			$ ssh -X your-cs-name@emperor-01.cs.wisc.edu
+			$ cd /usr/games/
+			$ ls
+			$ ./gnome-sudoku
+			$ logout
+		\end{minted}
+		\end{center}
+	\end{frame}
+
 	% 4.gcc
   \begin{frame}
     \frametitle{GCC}
@@ -146,7 +173,25 @@
 			\item assembly (binary code)
 			\item linking (executable binary code)
     \end{enumerate}
-  \end{frame}
+	\end{frame}
+
+	% 4-2.gcc code
+	\begin{frame}[fragile]
+		\frametitle{Try preprocessing yourself}
+		Preprocess test.c
+		\begin{center}
+		\begin{minted}{bash}
+			$ cd ~/UWOS/1-intro/demo/unix
+			$ ls
+			Makefile  test.c  test.h
+			$ cat test.h
+			$ cat test.c
+			$ gcc -E test.c >prep_test.c
+			$ cat prep_test.c
+		\end{minted}
+		\end{center}
+	\end{frame}
+
 
 	% 5.make
   \begin{frame}[fragile]
