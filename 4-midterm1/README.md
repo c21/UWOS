@@ -112,7 +112,7 @@
                         * suffer from replacing important page
                     3. randomly replace a page (random)
                         * suffer from replacing important page
-                    4. replace page least recently used(LRU)
+                    4. replace page least recently used (LRU)
                         * suffer from hard to implement (time complexity)
                     5. clock algorithm (approximate LRU)
                         * use bit: for each page, set to 1 when page is referenced
