@@ -46,7 +46,7 @@ $ cd xv6/
 $ ctags -R */*
 ```
 
-By typing **ctags -R \*/\***, we generate a **tags** file for our whole xv6 project. This **tags** file is used by **ctags** internally to help us jump around code.
+By typing **ctags -R \*/\* **, we generate a **tags** file for our whole xv6 project. This **tags** file is used by **ctags** internally to help us jump around code.
 
 Before the magic happens, let's do one more thing:
 
