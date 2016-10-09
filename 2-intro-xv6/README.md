@@ -60,7 +60,7 @@ This will help vim to work with ctags.
 Then we open a file:
 
 ```shell
-$ vim kernel/sysproc.c
+$ vi kernel/sysproc.c
 ```
 
 Move cursor to the string **fork()** in line 12 of file. Then type **ctrl-]**. See? You should jump to the definition of fork() function! If you want to go back, type **ctrl-o**. Brove! You can use this method search for structure definition too. If you have multiple matchings by typing **ctrl-]**, type **:tn** to see next matching, type **:tp** to see previous matching, and type **:ts** to see all matchings.
