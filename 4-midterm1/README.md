@@ -1,4 +1,4 @@
-# Review for midterm 1
+# Review for Midterm 1
 1. Processor will
     * fetch instruction from memory
     * decode
