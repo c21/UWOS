@@ -1,0 +1,260 @@
+1.Redundant Arrays of Inexpensive Disks (RAID)
+  A group of disks with memory and processors (hope to be faster, larger, more reliable than a single disk).
+  
+  structure
+  interface: read/write an array (as one disk)
+  internal: transfer a I/O request from file system, to multiple I/O requests.
+ 
+  (1).level 0 (striping)
+  spread blocks across disk in a round-robin way.
+  e.g.  
+  Disk 0   Disk 1   Disk 2   Disk 3
+    0       1         2       3
+    4       5         6       7
+    ...
+  0,1,2,3 blocks are in the same stripe. If block size is 4KB, chunk size is 4KB.      
+
+  Assume N disks, each has B blocks, single-block read/write: T,
+  transfer speed: S (sequential workload), R (random wordload).
+
+  capacity: N*B 
+  failure tolerance: 0
+  single-block read/write(time): T
+  sequential read/write: N*S
+  random read/write: N*R
+
+  (2).level 1 (mirroring)
+  make more than one copy of each block.
+  e.g.
+  Disk 0   Disk 1   Disk 2   Disk 3
+    0       0         1       1
+    2       2         3       3
+    ...  
+ 
+  capacity: N*B/2
+  failure tolerance: 1
+  single-block read/write(time): T
+  sequential read/write: N*S/2
+  random read: N*R
+  random write: N*R/2
+
+  (3).level 4 (parity) 
+  make a disk to be XOR result of all other disks.
+  e.g.
+  Disk 0   Disk 1   Disk 2   Disk 3
+    0       1         2       P0 = (block 0 ^ 1 ^ 2)
+    3       4         5       P1
+    ...            
+  the number of bit 1 in one row is even.
+ 
+  capacity: (N-1)*B
+  failure tolerance: 1
+  single-block read(time): T
+  single-block write(time): 2T (two read, two write with subtractive parity method)
+  sequential read/write: (N-1)*S
+  random read: (N-1)*R
+  random write: R/2 (two read, two write with subtractive parity method) 
+
+  *for random write, the parity disk is bottoleneck.
+
+  (4).level 5 (rotating parity)
+  rotate parity block across disks, to address the parity disk bottoleneck of level 4.
+  e.g.
+  Disk 0   Disk 1   Disk 2   Disk 3
+    0       1         2       P0
+    4       5         P1      3
+    8       P2        6       7
+    P3      9         10      11
+    ...
+  *rotation direction: -->
+
+  capacity: (N-1)*B
+  failure tolerance: 1
+  single-block read(time): T
+  single-block write(time): 2T
+  sequential read/write: (N-1)*S
+  random read: N*R (because using all disks, distributing parity blocks)
+  random write: N*R/4
+
+2.file/directory
+  file/directory: an array of bytes.
+  directory: a kind of file, whose content is mapping <name, inode>
+ 
+  APIs (use file descriptor):
+  creat(char*): create a file   
+  open(char*, int): open/create a file
+  read(int, void*, size_t): read a file
+  write(int, void*, size_t): write a file
+  lseek(int, off_t, int): set file offset
+  close(int): close the connection of the file descriptor with that file  
+
+  fsync(int): force write() to disk (OS will buffer write())
+  rename(char*, char*): rename a file
+  fstat(int, struct stat*), stat(char*, struct stat*): get information(metadata) of file
+  unlink(char*): delete a file (remove this name entry, decrement reference count, if zero, delete file) 
+  link(char*, char*): make a hard link of file (add an entry of new name at that directory, pointing to the old name's inode)
+
+  *symbolic/soft link: add a new file, whose content is the pathname of old file. 
+  *The advantage of soft link over hard link is that soft link can link directory, and file in another file system. 
+
+  mkdir(char*, mode_t): make a directory
+  opendir(char*): open a directory
+  readdir(DIR*): read a directory
+  closedir(DIR*): close a directory
+  rmdir(char*): delete a directory, which must be empty
+          
+3.very simple file system (VSFS)
+  structure:
+  an array of block(e.g. 4KB)
+  super-block   inode-bitmap    data-bitmap   inode-block   data-block
+  
+  inode:
+  file type, file size, time, pointers to data blocks(multi-level index: indirect pointers).
+  *why multi-level index: most files are small.
+  
+  directory:
+  a linear list of mapping <name, inode>.
+  
+  speed up:
+  read cache
+  write buffer  
+   
+4.fast file system (FFS)
+  *VSFS suffers from disk positioning time (VSFS treats disk as random access memory wrongly).
+  *VSFS does not place related files together(e.g. file's inode and data block).
+
+  structure:
+  an array of block(e.g. 4KB), group near-by blocks into a group. for each group:
+  super-block(a copy)   inode-bitmap    data-bitmap   inode-block   data-block  
+  
+  policy:
+  keep related stuff together.
+  for directory: put its inode and data to a group with low # of directories (balance directories across groups), 
+                 and high # of free inodes (be able to allocate files).  
+  for file: put its inode and data to a group with its parent directory. 
+  
+  *large file exception:
+  Because large file may occupy whole group, spread large file in different groups.
+  
+5.crash of file system.
+  how to insure consistency when there is a crash of updating file system.
+  (1).file system checker
+  check and fix inconsistency when machine rebooting.
+  fsck.
+  *suffer from too slow to check whole disk, even though only updating a small part of disk.
+ 
+  (2).journaling (write-ahead logging)
+  write log before updating disk. When system crashes and reboots, lookup log to redo job.
+  e.g. Linux ext3
+  disk is divided into groups:
+  super-block   journal   group0    group1    group2  ...
+  *any block update is atomically.
+  *transcation begin/end blocks contain transcation's id.
+  *metadata: bitmap, inode
+
+      a.data journaling 
+      1.journal write: write transaction begin block, data and metadata blocks to journal.
+      2.journal commit: write transcation end block to journal.
+      3.checkpoint: write journal to final truly locations on disk.
+      4.free: mark the transcation in journal to be free to use again.
+    
+      *suffer from writing data in journal and truly locations twice.
+  
+      b.metadata journaling
+      1.data/journal metadata write: write data to final locations.
+                                     writetranscation begin block, and metadata blocks to journal.
+      2.journal commit
+      3.checkpoint
+      4.free     
+ 
+6.log-structured file system (LFS)
+  write update(data, metadata, inode map) sequentially in new locations, never overwrite old locations.
+  *optimize for writing.
+  *have to do garbage collection of old version of data and metadata.
+
+  inode map: mapping <inode number, disk address of inode>
+  checkpoint region: mapping <inode number, disk address of inode map>
+  segment summary block: for each data block: mapping <inode number, its offset>
+
+  read a file: checkpoint region -> inode map -> inode -> data  
+ 
+7.virtual machine monitor (VMM)
+  serve as a layer between OSes and hardware.
+ 
+  (1).virtualize CPU
+  process system call -> VMM calls OS trap handler -> OS trap handler does things, and wants to return-from-trap
+  -> VMM does true return-from-trap
+
+  process: user mode
+  OS: less privileged mode
+  VMM: kernel mode   
+
+  (2).virtualize memory
+  process virtual address TLB miss -> VMM calls OS TLB handler -> OS gets <VPN,PFN> from per-process page table, and 
+  wants to update TLB-> VMM gets <PFN, MFN>, updates TLB with <VPN, MFN> instead -> OS issues return-from-trap
+  -> VMM does trun return-from-trap 
+
+  TLB: <VPN, MFN>, not <VPN, PFN>
+
+  process: virtual memory
+  OS: physical memory    
+  VMM: machine memory (truly physical memory) 
+
+  per-process page table: <virtual page number, physical frame number>
+  per-OS page table: <physical frame number, machine frame number>
+
+8.network file system (NFS)
+  a distributed file system. Server stores data on its disk, clients request data 
+  from server via network.
+  *why use this file system: 1.sharing of data across clients 2.easily centralized administration of data
+  3.security of data, easily protect data given few servers.
+
+  file handle: volume identifier, inode number, generation number.
+  protocols under general API(read,write,...):
+  nfs_lookup(directory file handle, file name)  
+  nfs_read(file handle, offset, count)  
+  nfs_write(file handle, offset, count, data) 
+
+  cache consistency problems:
+  *to improve performance, the client has cache and buffer.
+  1.update visibility: C1 overwrites file in its buffer, but C2 will read the old file.
+    solution: flush-on-close, when close the file, flushes buffer to server.
+  2.stale cache: C1 reads a file, then stores it in cache. C2 overwrites it. C1 reads file again.
+    solution: when open the file, check the time of modification, by issuing a function: GETATTR. 
+    
+9.flash-based solid-state storage device (flash-based SSD)
+  a persistent device, built from transistors, like memory and CPU.
+  block: e.g. 128 KB
+  page: e.g. 4KB  
+ 
+  operations:
+  read a page
+  write a page: may erase a block (change pages states to ERASED, change all bits to 1), 
+                then program a page (change pages state from ERASED to VALID)
+
+  *wear out: frequent erase and program can make the block unusable
+ 
+  write amplification: (bytes written to physical blocks) / (bytes written to logical blocks)
+ 
+  flash translation layer(FTL): translation from read/write requests on logical blocks, to
+                                read/erase/program requests on physical blocks.
+  1.direct mapped FTL: logical page N -> physical page N 
+    *suffer from high cost of write, and wear out
+  2.log-structured FTL: always write to the next free block, maintain a mapping table from logical page to physical page.
+    *solve the large size of mapping table: per-page mapping + per-block mapping (hybrid mapping)
+
+    garbage collection of this block: read live pages, write live pages to new free block, erase this block  
+    wear leveling: spread the write work across all blocks evenly, make all blocks wear out at the same time
+ 
+?RAID level 5 random write: file-raid.pdf P14 
+
+?make and mount a file sytem: file-intro.pdf P16 
+
+?Thus, when mounting a file system, the operating system will read
+the superblock first, to initialize various parameters, and then attach the
+volume to the file-system tree. When files within the volume are accessed,
+the system will thus know exactly where to look for the needed on-disk
+structures. file-implementation.pdf P4
+
+http://pages.cs.wisc.edu/~remzi/Classes/537/Fall2013/OldExams/11-fall-final-solutions.pdf: 1(4), 4(8), 5(1,4), 6, 7, 8, 10
+how to use read/wrte/lseek/open/close function 
